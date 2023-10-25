@@ -1,43 +1,43 @@
-Om een Windows-computer via SSH een commando naar een Linux NAS te laten sturen om de NAS uit te schakelen wanneer de Windows-pc wordt uitgezet, moet je een script of een batchbestand maken. Hier is een algemene methode om dit te bereiken:
+To allow a Windows computer to send a command to a Linux NAS via SSH to shut down the NAS when the Windows PC is turned off, you need to create a script or a batch file. Here is a general method to achieve this:
 
-**Stap 1: Installeer OpenSSH op Windows:**
+**Step 1: Install OpenSSH on Windows:**
 
-Zorg ervoor dat de Windows-computer OpenSSH-client geïnstalleerd heeft. Je kunt dit doen via de Windows-instellingen.
+Ensure that your Windows computer has the OpenSSH client installed. You can do this through Windows settings.
 
-**Stap 2: Genereer SSH-sleutels:**
+**Step 2: Generate SSH Keys:**
 
-Genereer SSH-sleutels op de Windows-computer met het volgende commando in PowerShell:
+Generate SSH keys on the Windows computer with the following PowerShell command:
 
 ```powershell
 ssh-keygen
 ```
 
-Volg de instructies om de sleutels te genereren. Hierdoor wordt een openbare sleutel (id_rsa.pub) gegenereerd die je zult gebruiken om verbinding te maken met de Linux NAS zonder een wachtwoord.
+Follow the instructions to generate the keys. This will create a public key (id_rsa.pub) that you will use to connect to the Linux NAS without a password.
 
-**Stap 3: Kopieer de openbare sleutel naar de Linux NAS:**
+**Step 3: Copy the Public Key to the Linux NAS:**
 
-Kopieer de inhoud van het gegenereerde `id_rsa.pub`-bestand op de Windows-computer en voeg het toe aan het `~/.ssh/authorized_keys`-bestand op de Linux NAS. Dit kun je doen via SSH of door het bestand handmatig te kopiëren en plakken.
+Copy the content of the generated `id_rsa.pub` file on the Windows computer and add it to the `~/.ssh/authorized_keys` file on the Linux NAS. You can do this via SSH or by manually copying and pasting the file.
 
 ```powershell
 cat ~/.ssh/id_rsa.pub | ssh root@nas "mkdir ~/.ssh; cat >> ~/.ssh/authorized_keys"
 ```
 
-**Stap 4: Test SSH-verbinding:**
+**Step 4: Test SSH Connection:**
 
-Test of je zonder wachtwoord naar de Linux NAS kunt verbinden vanaf de Windows-computer met het volgende commando:
+Test if you can connect to the Linux NAS from the Windows computer without a password using the following command:
 
 ```bash
 ssh root@nas
 ```
 
-Hierbij moet je "root" vervangen door de daadwerkelijke gebruikersaccount op de Linux NAS en "nas" door het IP-adres of de hostname van de NAS.
+Replace "root" with the actual user account on the Linux NAS, and "nas" with the NAS's IP address or hostname.
 
-**Stap 5: Maak een batchbestand op Windows:**
+**Step 5: Create a Batch File on Windows:**
 
-Maak een batchbestand (bijvoorbeeld `shutdown_nas.bat`) op de Windows-computer met de volgende inhoud:
+Create a batch file (e.g., `shutdown_nas.bat`) on the Windows computer with the following content:
 
 <details>
-<summary>command "shutdown -h now"</summary>
+<summary>Command "shutdown -h now"</summary>
 
 ```batch
 @echo off
@@ -46,7 +46,7 @@ ssh root@nas "shutdown -h now"
 </details>
 
 <details>
-<summary>command "/sbin/poweroff"</summary>
+<summary>Command "/sbin/poweroff"</summary>
 
 ```batch
 @echo off
@@ -54,16 +54,28 @@ ssh root@nas "/sbin/poweroff"
 ```
 </details>
 
-Vervang "root" door de daadwerkelijke gebruikersaccount op de Linux NAS.
+Replace "root" with the actual user account on the Linux NAS.
 
-**Stap 6: Voer het batchbestand uit bij het afsluiten:**
+**Step 6: Execute the Batch File on Shutdown:**
 
-Om dit batchbestand uit te voeren wanneer je de Windows-computer uitzet, kun je een groepsbeleid instellen. Hier is hoe:
+To run this batch file when you shut down the Windows computer, you can set a group policy. Here's how:
 
-- Druk op Win + R om het Uitvoeren-venster te openen.
-- Typ "gpedit.msc" en druk op Enter.
-- Ga naar "Computerconfiguratie" > "Windows-instellingen" > "Scripts (opstart/afsluiten)".
-- Selecteer "Aan de slag" bij "Afsluiten".
-- Klik op "Toevoegen" en selecteer het batchbestand dat je hebt gemaakt.
+- Press Win + R to open the Run window.
+- Type "gpedit.msc" and press Enter.
+- Go to "Computer Configuration" > "Windows Settings" > "Scripts (Startup/Shutdown)".
+- Choose "Shutdown" and click "Add," then select the batch file you created.
 
-Nu zal het batchbestand worden uitgevoerd wanneer je de Windows-computer afsluit, en het zal de SSH-opdracht verzenden om de Linux NAS uit te schakelen voordat de Windows-pc wordt afgesloten.
+Now, the batch file will run when you shut down the Windows computer, sending the SSH command to shut down the Linux NAS before the Windows PC is powered off.
+
+
+# What is SSH
+![What is SSH and how does it work?](https://surfshark.com/wp-content/uploads/2022/04/SSH_vs_VPN_2.svg)
+[source](https://surfshark.com/blog/ssh-vs-vpn)
+
+What is SSH and how does it work?
+
+SSH stands for “Secure Shell.” It is a network protocol that allows you to safely access remote devices and transfer data or run commands. This technology encrypts and disguises your traffic, ensuring the security of your connection.
+
+This means that you can access network resources from practically anywhere. It’s particularly useful when you want secure communication between your computer at work and home. 
+
+
