@@ -1,2 +1,2 @@
 @echo off
-ssh gebruikersnaam@linuxnas "/sbin/poweroff"
+ssh root@nas "/sbin/poweroff"
