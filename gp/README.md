@@ -36,13 +36,25 @@ Hierbij moet je "root" vervangen door de daadwerkelijke gebruikersaccount op de 
 
 Maak een batchbestand (bijvoorbeeld `shutdown_nas.bat`) op de Windows-computer met de volgende inhoud:
 
+<details>
+<summary>command "shutdown -h now"</summary>
+
 ```batch
 @echo off
 ssh root@nas "shutdown -h now"
-shutdown /s /f /t 0
 ```
+</details>
 
-Vervang "root" door de daadwerkelijke root op de Linux NAS.
+<details>
+<summary>command "/sbin/poweroff"</summary>
+
+```batch
+@echo off
+ssh root@nas "/sbin/poweroff"
+```
+</details>
+
+Vervang "root" door de daadwerkelijke gebruikersaccount op de Linux NAS.
 
 **Stap 6: Voer het batchbestand uit bij het afsluiten:**
 
