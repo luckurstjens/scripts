@@ -1,2 +1,2 @@
 @echo off
-ssh gebruikersnaam@linuxnas "shutdown -h now"
+ssh root@nas "shutdown -h now"
